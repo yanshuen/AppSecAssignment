@@ -1,0 +1,85 @@
+﻿@page
+@model AppSecAssignment.Pages.LoginModel
+@{
+}
+@using Microsoft.Extensions.Options
+@using AppSecAssignment.Services
+@inject IOptions<CaptchaConfig> CaptchaConfig
+
+<script src="https://www.google.com/recaptcha/api.js?render=6Le6a98jAAAAAOG0ijcbveIrC0_-SNtf222lTBac"></script>
+
+<div class="container mt-5">
+
+	<div class="row justify-content-center align-items-center">
+
+		<div class="col-sm-12 col-md-12 col-lg-4">
+			<h1 class="mb-3">Login </h1>
+
+			<form method="post" id="form" asp-antiforgery="true">
+				<input type="hidden" id="token" asp-for="LModel.Token"/>
+				<div asp-validation-summary="All" class="text-danger"></div>
+
+				@if (TempData["CredentialsWrong"] != null)
+				{
+					<div class="alert alert-danger">
+						@TempData["CredentialsWrong"]
+					</div>
+				}
+
+				@if (TempData["Lockout"] != null)
+				{
+					<div class="alert alert-danger">
+						@TempData["Lockout"]
+					</div>
+				}
+
+				@if (TempData["MultipleLogin"] != null)
+				{
+					<div class="alert alert-danger">
+						@TempData["MultipleLogin"]
+					</div>
+				}
+
+				@if (TempData["Robot"] != null)
+				{
+					<div class="alert alert-danger">
+						@TempData["Robot"]
+					</div>
+				}
+				
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="LModel.Email">Email Address</label>
+					<input type="email" asp-for="LModel.Email" class="form-control" />
+					<span asp-validation-for="LModel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="LModel.Password">Password</label>
+					<input type="password" asp-for="LModel.Password" class="form-control" id="password" />
+					<span asp-validation-for="LModel.Password" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3 form-check">
+					<input type="checkbox" asp-for="LModel.RememberMe" class="form-check-input" />
+					<label class="form-check-label" asp-for="LModel.RememberMe">Remember Me?</label>
+				</div>
+
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Login</button>
+				</div>
+				<div>
+					<a asp-page="/ForgotPassword">Forgot Password?</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		grecaptcha.ready(function () {
+			grecaptcha.execute('6Le6a98jAAAAAOG0ijcbveIrC0_-SNtf222lTBac', { action: 'submit' }).then(function (token) {
+				document.getElementById("token").value = token;
+			});
+		});
+	</script>
+</div>

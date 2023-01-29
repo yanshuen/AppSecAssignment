@@ -1,0 +1,145 @@
+﻿@page
+@model AppSecAssignment.Pages.RegisterModel
+@{
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+
+            <h1 class="mb-3">Register </h1>
+            
+            @if (TempData["DuplicateEmail"] != null)
+				{
+					<div class="alert alert-danger">
+                        @TempData["DuplicateEmail"]
+					</div>
+				}
+
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Name">Full Name</label>
+                    <input type="text" asp-for="RModel.Name" class="form-control" />
+                    <span asp-validation-for="RModel.Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.CreditCardNo">Credit Card Number</label>
+                    <input type="text" asp-for="RModel.CreditCardNo" class="form-control" autocomplete="off" />
+                    <span id="creditcard_validate"></span>
+                    <span asp-validation-for="RModel.CreditCardNo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Gender">Gender</label><br />
+
+                    @Html.RadioButtonFor(m => m.RModel.Gender, "Male", new {@id = "Male", @class = "form-check-input"})
+                    <label class="form-check-label">Male</label><br />
+
+                    @Html.RadioButtonFor(m => m.RModel.Gender, "Female", new {@id = "Female", @class = "form-check-input"})
+                    <label class="form-check-label">Female</label>
+
+                    <span asp-validation-for="RModel.Gender" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.MobileNo">Mobile Number</label>
+                    <input type="text" asp-for="RModel.MobileNo" class="form-control" />
+                    <span asp-validation-for="RModel.MobileNo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.DeliveryAddress">Delivery Address</label>
+                    <input type="text" asp-for="RModel.DeliveryAddress" class="form-control" />
+                    <span asp-validation-for="RModel.DeliveryAddress" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Email">Email Address</label>
+                    <input type="email" asp-for="RModel.Email" class="form-control" />
+                    <span asp-validation-for="RModel.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Password">Password</label>
+                    <input type="password" asp-for="RModel.Password" class="form-control" id="password" onkeyup="pwvalidate()" />
+                    <span id="pw_validate"></span>
+                    <span asp-validation-for="RModel.Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+                    <input type="password" asp-for="RModel.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="RModel.ConfirmPassword" class="text-danger"></span>
+                </div>
+                    
+                <div class="mb-3">
+                <label class="form-label" asp-for="RModel.Upload">Photo</label>
+                    <input type="file" accept="image/*" asp-for="RModel.Upload" class="form-control" onchange="showImgPreview(this)" /><br />
+                    <span asp-validation-for="RModel.Upload" class="text-danger"></span>
+                        <img id="imgPreview" class="rounded-circle" style="height:300px;width:300px;object-fit:cover"
+                         src="/uploads/user.png" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.AboutMe">About Me</label>
+                    <input type="text" asp-for="RModel.AboutMe" class="form-control" />
+                    <span asp-validation-for="RModel.AboutMe" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showImgPreview(input) {
+        if (input.files[0]) {
+            var uploadimg = new FileReader();
+            uploadimg.onload = function (displayimg) {
+                $("#imgPreview").attr('src', displayimg.target.result);
+            }
+            uploadimg.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function pwvalidate() {
+        var pw = document.getElementById('password').value;
+        if (pw.length < 12) {
+            document.getElementById("pw_validate").innerHTML = "Password length must be at least 12 characters.";
+            document.getElementById("pw_validate").className = "text-danger";
+            return "too short"
+        }
+        else if (pw.search(/[0-9]/) == -1) {
+            document.getElementById("pw_validate").innerHTML = "Password requires at least 1 number.";
+            document.getElementById("pw_validate").className = "text-danger";
+            return "no number"
+        }
+        else if (pw.search(/[a-z]/) == -1) {
+            document.getElementById("pw_validate").innerHTML = "Password requires at least 1 lowercase alphabeth.";
+            document.getElementById("pw_validate").className = "text-danger";
+            return "no lowercase"
+        }
+        else if (pw.search(/[A-Z]/) == -1) {
+            document.getElementById("pw_validate").innerHTML = "Password requires at least 1 uppercase alphabeth.";
+            document.getElementById("pw_validate").className = "text-danger";
+            return "no uppercase"
+        }
+        else if (pw.search(/[!?*#/]/) == -1) {
+            document.getElementById("pw_validate").innerHTML = "Password requires at least 1 special character. Special character includes !, ?, *, #, /";
+            document.getElementById("pw_validate").className = "text-danger";
+            return "no special character"
+        }
+        else {
+            document.getElementById("pw_validate").innerHTML = ""
+        }
+    }
+</script>

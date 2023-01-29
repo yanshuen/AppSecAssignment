@@ -1,0 +1,57 @@
+﻿@page
+@model AppSecAssignment.Pages.OTPModel
+@{
+}
+
+<form method="post" asp-route-email="@Model.Email">
+    @{
+        @if (Model.EmailSent == true)
+        {
+        <div class="alert alert-success">
+            <p>We have sent an email with your OTP.</p>
+        </div>
+        }
+        @if (TempData["OTPWrong"] != null)
+		{
+            <div class="alert alert-danger">
+                @TempData["OTPWrong"]
+            </div>
+		}
+    }
+
+    <div class="mb-3">
+        <input type="hidden" asp-for="myUser.Email" />
+        <input type="hidden" asp-for="myUser.FullName"  />
+        <input type="hidden" asp-for="myUser.CreditCardNo"  />
+        <input type="hidden" asp-for="myUser.Gender"  />
+        <input type="hidden" asp-for="myUser.DeliveryAddress"  />
+        <input type="hidden" asp-for="myUser.Photo"  />
+        <input type="hidden" asp-for="myUser.PhoneNumber" />
+        <input type="hidden" asp-for="myUser.AboutMe" />
+        <div asp-validation-summary="All"></div>
+
+        <label class="form-label" asp-for="myUser.OTP">Key in OTP here</label>
+        <input type="text" asp-for="myUser.OTP" value="" class="form-control" id="otp" autocomplete="off"/>
+        <span id="otp_validation"></span>
+        <span asp-validation-for="myUser.OTP" class="text-danger"></span>
+    </div>
+
+    <div>
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+    </div>
+</form>
+
+@*<script type="text/javascript">
+    function validate() {
+        var otp = document.getElementById("otp").value;
+        let pattern = "[\d]";
+        let regex = new RegExp(pattern);
+        if (!otp.search(regex)) {
+            document.getElementById("otp_validation").innerHTML = "Input can only contain digits.";
+            document.getElementById("otp_validation").className = "text-danger";
+        }
+        else {
+            document.getElementById("otp_validation").innerHTML = ""
+        }
+    }
+</script>*@

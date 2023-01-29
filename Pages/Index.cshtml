@@ -1,0 +1,61 @@
+﻿@page
+@model IndexModel
+@{
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<h2>User Details</h2>
+<br />
+<table style="width:100%">
+    <tr>
+        <th>Full Name</th>
+        <td>@Model.fullname</td>
+    </tr>
+    <tr>
+        <th>Credit Card Number</th>
+        <td>@Model.creditCard</td>
+    </tr>
+    <tr>
+        <th>Gender</th>
+        <td>@Model.gender</td>
+    </tr>
+    <tr>
+        <th>Mobile Number</th>
+        <td>@Model.mobile</td>
+    </tr>
+    <tr>
+        <th>Delivery Address</th>
+        <td>@Model.delivery</td>
+    </tr>
+    <tr>
+        <th>Email Address</th>
+        <td>@Model.email</td>
+    </tr>
+    <tr>
+        <th>Photo</th>
+        <td>
+            <img id="imgPreview" style="height:100px;width:100px;object-fit:cover"
+                 src="@Model.photo"
+                 onerror="this.src='/images/user.png'" />
+            <input class="form-control d-none" asp-for="@Model.photo)" />
+        </td>
+    </tr>
+    <tr>
+        <th>About Me</th>
+        <td>@Model.aboutme</td>
+    </tr>
+</table>
+
+<style>
+    th {
+        width: 20%;
+        padding-bottom: 10px;
+    }
+
+    td {
+        padding-bottom: 10px;
+    }
+</style>
